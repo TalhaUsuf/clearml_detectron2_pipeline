@@ -22,6 +22,7 @@ def cpy(src, dst):
     dst : str
         destination folder inside which needs to be copied
     '''    
+    # Console().log(f"{src}\t\t{dst}")
     copy2(src, dst)
 
 
@@ -54,16 +55,19 @@ def main(argv):
     # obj_data[0] = "classes=" + str(len(classes))
     # with open("mosaic_augmentation_on_yolo_format/w9/obj.data", "w") as k:
     #     k.writelines(obj_data)
+    
+    # remove previous files in data folder
+    prev_files = glob("mosaic_augmentation_on_yolo_format/w9/data/*")
+    [os.remove(j) for j in prev_files]
+    
     images = base / "obj_train_data"
     # copy all annots + images
     to_cpy = [k for k in images.iterdir() if k.is_file()]
 
-    args = [[k.as_posix(), v] for k, v in zip(to_cpy, repeat("mosaic_augmentation_on_yolo_format/w9/data"))]
-    Console().log(args)
-    # remove previous files in data folder
-    prev_files = glob("mosaic_augmentation_on_yolo_format/w9/data/*")
-    [os.remove(j) for j in prev_files]
-    pqdm(args, to_cpy, desc="Copying files", argument_type='args', n_jobs=12, colour='green')
+    args = [[k.as_posix(), str(v)] for k, v in zip(to_cpy, repeat("mosaic_augmentation_on_yolo_format/w9/data/"))]
+    # Console().log(args)
+    
+    pqdm(args, cpy, desc="Copying files", argument_type='args', n_jobs=12, colour='green')
     
 
 if __name__ == '__main__':
