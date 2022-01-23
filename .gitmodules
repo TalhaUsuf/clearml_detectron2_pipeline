@@ -1,0 +1,3 @@
+[submodule "mosaic_augmentation"]
+	path = mosaic_augmentation
+	url = https://github.com/TalhaUsuf/mosaic_augmentation_on_yolo_format.git
